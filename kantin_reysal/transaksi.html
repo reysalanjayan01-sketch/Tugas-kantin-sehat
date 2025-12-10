@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kantin Sehat - Transaksi</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-utensils"></i> Kantin Sehat</h1>
+            <nav>
+                <a href="menu.html"><i class="fas fa-list"></i> Menu</a>
+                <a href="#" class="nav-active"><i class="fas fa-shopping-cart"></i> Transaksi</a>
+                <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </nav>
+        </header>
+        
+        <div class="content">
+            <div class="page-header">
+                <h2><i class="fas fa-cash-register"></i> Transaksi Pembelian</h2>
+                <p>Lengkapi data transaksi berikut</p>
+            </div>
+            
+            <div class="transaction-form">
+                <div class="transaction-info">
+                    <div class="info-card">
+                        <h3><i class="fas fa-info-circle"></i> Informasi Transaksi</h3>
+                        <p><strong>Tanggal:</strong> <span id="transactionDate"></span></p>
+                        <p><strong>No. Transaksi:</strong> <span id="transactionId">TRX-001</span></p>
+                    </div>
+                </div>
+                
+                <div class="cart-items">
+                    <h3><i class="fas fa-shopping-basket"></i> Produk dalam Keranjang</h3>
+                    <div id="cartItemsContainer">
+                        <!-- Item keranjang akan dimuat via JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="transaction-summary">
+                    <h3><i class="fas fa-file-invoice-dollar"></i> Ringkasan Transaksi</h3>
+                    
+                    <div class="summary-details">
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">Rp 0</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Jumlah Item:</span>
+                            <span id="totalItems">0 item</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span><strong>Total Pembayaran:</strong></span>
+                            <span><strong id="totalPayment">Rp 0</strong></span>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-method">
+                        <h4><i class="fas fa-money-check-alt"></i> Metode Pembayaran</h4>
+                        <div class="payment-options">
+                            <label>
+                                <input type="radio" name="payment" value="tunai" checked>
+                                <i class="fas fa-money-bill-wave"></i> Tunai
+                            </label>
+                            <label>
+                                <input type="radio" name="payment" value="qris">
+                                <i class="fas fa-qrcode"></i> QRIS
+                            </label>
+                            <label>
+                                <input type="radio" name="payment" value="transfer">
+                                <i class="fas fa-university"></i> Transfer Bank
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="transaction-actions">
+                        <button id="backToMenu" class="btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Kembali ke Menu
+                        </button>
+                        <button id="saveTransaction" class="btn-primary">
+                            <i class="fas fa-save"></i> Simpan Transaksi
+                        </button>
+                        <button id="printReceipt" class="btn-success">
+                            <i class="fas fa-print"></i> Cetak Struk
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Ujian Praktik Terpadu Kelas XI RPL &copy; 2024</p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

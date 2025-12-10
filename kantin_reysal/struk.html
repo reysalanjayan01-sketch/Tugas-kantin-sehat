@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kantin Sehat - Struk Pembayaran</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Styling khusus untuk struk */
+        .receipt-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border: 1px dashed #ccc;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .receipt-header {
+            text-align: center;
+            border-bottom: 2px dashed #333;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .receipt-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .receipt-address {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .receipt-details {
+            margin-bottom: 15px;
+        }
+        
+        .receipt-details p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .receipt-items {
+            width: 100%;
+            margin: 15px 0;
+            border-collapse: collapse;
+        }
+        
+        .receipt-items th {
+            border-bottom: 1px dashed #333;
+            padding: 8px 5px;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        .receipt-items td {
+            padding: 5px;
+            font-size: 13px;
+        }
+        
+        .receipt-total {
+            border-top: 2px dashed #333;
+            padding-top: 10px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        
+        .receipt-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px dashed #ccc;
+            padding-top: 10px;
+        }
+        
+        .print-actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        @media print {
+            .no-print {
+                display: none;
+            }
+            
+            .receipt-container {
+                box-shadow: none;
+                border: none;
+                max-width: 100%;
+            }
+            
+            body {
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="no-print">
+            <h1><i class="fas fa-utensils"></i> Kantin Sehat</h1>
+            <nav>
+                <a href="menu.html"><i class="fas fa-list"></i> Menu</a>
+                <a href="transaksi.html"><i class="fas fa-shopping-cart"></i> Transaksi</a>
+                <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </nav>
+        </header>
+        
+        <div class="content">
+            <div class="page-header no-print">
+                <h2><i class="fas fa-receipt"></i> Struk Pembayaran</h2>
+                <p>Struk transaksi yang telah disimpan</p>
+            </div>
+            
+            <div class="receipt-container" id="receiptContent">
+                <!-- Struk akan di-generate via JavaScript -->
+            </div>
+            
+            <div class="print-actions no-print">
+                <button onclick="window.print()" class="btn-primary">
+                    <i class="fas fa-print"></i> Cetak Struk
+                </button>
+                <button onclick="window.location.href='menu.html'" class="btn-secondary">
+                    <i class="fas fa-plus-circle"></i> Transaksi Baru
+                </button>
+                <button onclick="window.location.href='transaksi.html'" class="btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Kembali
+                </button>
+            </div>
+        </div>
+        
+        <footer class="no-print">
+            <p>Ujian Praktik Terpadu Kelas XI RPL &copy; 2024</p>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+    <script>
+        // Fungsi untuk menampilkan struk
+        function generateReceipt() {
+            const receiptContent = document.getElementById('receiptContent');
+            const transaction = JSON.parse(localStorage.getItem('lastTransaction')) || {
+                id: 'TRX-001',
+                date: new Date().toLocaleString('id-ID'),
+                items: [],
+                total: 0,
+                payment: 'tunai'
+            };
+            
+            // Hitung subtotal
+            let subtotal = 0;
+            transaction.items.forEach(item => {
+                subtotal += item.harga * item.qty;
+            });
+            
+            // Format tanggal
+            const now = new Date();
+            const formattedDate = now.toLocaleDateString('id-ID', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            // Generate HTML struk
+            receiptContent.innerHTML = `
+                <div class="receipt-header">
+                    <div class="receipt-title">KANTIN SEHAT</div>
+                    <div class="receipt-address">
+                        Jl. Pendidikan No. 123<br>
+                        Telp: (021) 555-1234
+                    </div>
+                    <div>--------------------------------</div>
+                </div>
+                
+                <div class="receipt-details">
+                    <p><strong>No. Transaksi:</strong> ${transaction.id}</p>
+                    <p><strong>Tanggal:</strong> ${formattedDate}</p>
+                    <p><strong>Kasir:</strong> Admin</p>
+                    <div>================================</div>
+                </div>
+                
+                <table class="receipt-items">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Qty</th>
+                            <th>Harga</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${transaction.items.map(item => `
+                            <tr>
+                                <td>${item.nama}</td>
+                                <td>${item.qty}</td>
+                                <td>Rp ${item.harga.toLocaleString('id-ID')}</td>
+                                <td>Rp ${(item.harga * item.qty).toLocaleString('id-ID')}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                
+                <div class="receipt-total">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Subtotal:</span>
+                        <span>Rp ${subtotal.toLocaleString('id-ID')}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Total:</span>
+                        <span>Rp ${transaction.total.toLocaleString('id-ID')}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Pembayaran:</span>
+                        <span>${transaction.payment.toUpperCase()}</span>
+                    </div>
+                    <div>================================</div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        <strong>TERIMA KASIH</strong><br>
+                        <small>Selamat menikmati hidangan sehat</small>
+                    </div>
+                </div>
+                
+                <div class="receipt-footer">
+                    <p>*** Struk ini sebagai bukti pembayaran ***</p>
+                    <p>www.kantinsehat.sch.id</p>
+                </div>
+            `;
+        }
+        
+        // Jalankan fungsi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', generateReceipt);
+    </script>
+</body>
+</html>
